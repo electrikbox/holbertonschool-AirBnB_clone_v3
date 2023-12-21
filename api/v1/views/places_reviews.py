@@ -21,11 +21,9 @@ def get_all_reviews_from_place(place_id):
         abort(404)
 
     reviews = storage.all(Review).values()
-    list_reviews = []
-
-    for review in reviews:
-        if reviews.place_id == place_id:
-            list_reviews.append(review.to_dict())
+    
+    list_reviews = [
+        review.to_dict() for review in reviews if reviews.place_id == place_id]
 
     return jsonify(list_reviews)
 
@@ -88,7 +86,7 @@ def create_review(place_id):
 
     review = Review(**data)
     review.save()
-    return jsonify(user.to_dict()), 201
+    return jsonify(review.to_dict()), 201
 
 
 # UPDATE a user
